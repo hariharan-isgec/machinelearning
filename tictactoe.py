@@ -72,55 +72,86 @@ def Teach_5_neurons():
 ##### Main Body ########## Main Body #####
 # Speciifc Functions for Tic Tac Toe
 
+def Check_Game_Status(board_row1,board_row2,board_row3):
+
+	# Check the Board Values to Pass it to Neural Network with 2 Neurons 
+	check_game_row1=[0,0]
+	check_game_row1[0]=abs(board_row1[0]-board_row1[1])
+	check_game_row1[1]=abs(board_row1[1]-board_row1[2])
+	check_game_row2=[0,0]
+	check_game_row2[0]=abs(board_row2[0]-board_row2[1])
+	check_game_row2[1]=abs(board_row2[1]-board_row2[2])
+	check_game_row3=[0,0]
+	check_game_row3[0]=abs(board_row3[0]-board_row3[1])
+	check_game_row3[1]=abs(board_row3[1]-board_row3[2])
+	check_game_across1=[0,0]
+	check_game_across1[0]=abs(board_row1[0]-board_row2[1])
+	check_game_across1[1]=abs(board_row2[1]-board_row3[2])
+	check_game_across2=[0,0]
+	check_game_across2[0]=abs(board_row3[0]-board_row2[1])
+	check_game_across2[1]=abs(board_row2[1]-board_row1[2])
+	 
+	game_status_row1 = ActivationFunction_2_nerons(check_game_row1[0], weights_2_neurons[0], check_game_row1[1], weights_2_neurons[1], bias, weights_2_neurons[2])
+	game_status_row2 = ActivationFunction_2_nerons(check_game_row2[0], weights_2_neurons[0], check_game_row2[1], weights_2_neurons[1], bias, weights_2_neurons[2])
+	game_status_row3 = ActivationFunction_2_nerons(check_game_row3[0], weights_2_neurons[0], check_game_row3[1], weights_2_neurons[1], bias, weights_2_neurons[2])
+	game_status_across1 = ActivationFunction_2_nerons(check_game_across1[0], weights_2_neurons[0], check_game_across1[1], weights_2_neurons[1], bias, weights_2_neurons[2])
+	game_status_across2 = ActivationFunction_2_nerons(check_game_across2[0], weights_2_neurons[0], check_game_across2[1], weights_2_neurons[1], bias, weights_2_neurons[2])
+
+	# Pass the output of 2 Neuron Neural Network as Input to 5 Neurons Neural Network
+	FinalStatus = ActivationFunction_5_neurons(game_status_row1,weights_5_neurons[0],game_status_row2,weights_5_neurons[1],game_status_row3,weights_5_neurons[2],game_status_across1,weights_5_neurons[3],game_status_across2,weights_5_neurons[4],bias,weights_5_neurons[5])
+	return FinalStatus
+
+################################
+################################
 # Game Related code Startes Here
-	   
+################################
+################################	   
 Teach_2_neurons()
 Teach_5_neurons()
    
 # Tic Tac Board Status 
-board_row1 = [2,1,1]
-board_row2 = [2,1,2]
-board_row3 = [1,2,1]
+board_row1 = [10,11,12]
+board_row2 = [20,21,22]
+board_row3 = [30,31,32]
+FinalStatus=0
+PlayerNumber=2
+position = 21
+while FinalStatus == 0 and position > 0:
+	if PlayerNumber == 1:
+		PlayerNumber = 2
+	else:
+		PlayerNumber = 1
 
-# Check the Board Values to Pass it to Neural Network with 2 Neurons 
-check_game_row1=[0,0]
-check_game_row1[0]=abs(board_row1[0]-board_row1[1])
-check_game_row1[1]=abs(board_row1[1]-board_row1[2])
-check_game_row2=[0,0]
-check_game_row2[0]=abs(board_row2[0]-board_row2[1])
-check_game_row2[1]=abs(board_row2[1]-board_row2[2])
-check_game_row3=[0,0]
-check_game_row3[0]=abs(board_row3[0]-board_row3[1])
-check_game_row3[1]=abs(board_row3[1]-board_row3[2])
-check_game_across1=[0,0]
-check_game_across1[0]=abs(board_row1[0]-board_row2[1])
-check_game_across1[1]=abs(board_row2[1]-board_row3[2])
-check_game_across2=[0,0]
-check_game_across2[0]=abs(board_row3[0]-board_row2[1])
-check_game_across2[1]=abs(board_row2[1]-board_row1[2])
- 
-game_status_row1 = ActivationFunction_2_nerons(check_game_row1[0], weights_2_neurons[0], check_game_row1[1], weights_2_neurons[1], bias, weights_2_neurons[2])
-game_status_row2 = ActivationFunction_2_nerons(check_game_row2[0], weights_2_neurons[0], check_game_row2[1], weights_2_neurons[1], bias, weights_2_neurons[2])
-game_status_row3 = ActivationFunction_2_nerons(check_game_row3[0], weights_2_neurons[0], check_game_row3[1], weights_2_neurons[1], bias, weights_2_neurons[2])
-game_status_across1 = ActivationFunction_2_nerons(check_game_across1[0], weights_2_neurons[0], check_game_across1[1], weights_2_neurons[1], bias, weights_2_neurons[2])
-game_status_across2 = ActivationFunction_2_nerons(check_game_across2[0], weights_2_neurons[0], check_game_across2[1], weights_2_neurons[1], bias, weights_2_neurons[2])
+	print("")
+	print("Tic Tac Toe Board:Player Number", PlayerNumber)
+	print("[", board_row1[0], "] [", board_row1[1], "] [", board_row1[2], "]")   
+	print("[", board_row2[0], "] [", board_row2[1], "] [", board_row2[2], "]")   
+	print("[", board_row3[0], "] [", board_row3[1], "] [", board_row3[2], "]")   
+	print("")
+	print("Input the Cell Number say 10,20, 21 etc or 0 to EXIT")
+	position=int(input())
+	if position == 10:
+		board_row1[0]=PlayerNumber
+	if position == 11:
+		board_row1[1]=PlayerNumber
+	if position == 12:
+		board_row1[2]=PlayerNumber
+	if position == 20:
+		board_row2[0]=PlayerNumber
+	if position == 21:
+		board_row2[1]=PlayerNumber
+	if position == 22:
+		board_row2[2]=PlayerNumber
+	if position == 30:
+		board_row3[0]=PlayerNumber
+	if position == 31:
+		board_row3[1]=PlayerNumber
+	if position == 32:
+		board_row3[2]=PlayerNumber
 
-print("Tic Tac Toe Board:")
-print("[", board_row1[0], "] [", board_row1[1], "] [", board_row1[2], "]")   
-print("[", board_row2[0], "] [", board_row2[1], "] [", board_row2[2], "]")   
-print("[", board_row3[0], "] [", board_row3[1], "] [", board_row3[2], "]")   
-print("")
-print("Game Over Status Row 1:-", game_status_row1)
-print("Game Over Status Row 2:-", game_status_row2)
-print("Game Over Status Row 3:-", game_status_row3)
-print("Game Over Status Across 1:-", game_status_across1)
-print("Game Over Status Across 2:-", game_status_across2)
-print("")
+	FinalStatus = Check_Game_Status(board_row1,board_row2,board_row3)
 
-# Pass the output of 2 Neuron Neural Network as Input to 5 Neurons Neural Network
-FinalStatus = ActivationFunction_5_neurons(game_status_row1,weights_5_neurons[0],game_status_row2,weights_5_neurons[1],game_status_row3,weights_5_neurons[2],game_status_across1,weights_5_neurons[3],game_status_across2,weights_5_neurons[4],bias,weights_5_neurons[5])
-print("Final Game Status:-", FinalStatus)   
-
-
-   
-
+if FinalStatus == 1: 	
+	print("Game Won By:-", PlayerNumber)   
+else:
+	print("Game Draw !!!")   
