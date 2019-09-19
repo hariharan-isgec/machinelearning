@@ -78,6 +78,88 @@ def Teach_8_neurons():
 ##### Main Body ########## Main Body #####
 # Speciifc Functions for Tic Tac Toe
 def AutoMode(board_row1,board_row2, board_row3):
+	local_board_row1 = [0,0,0]
+	local_board_row2 = [0,0,0]
+	local_board_row3 = [0,0,0]
+	local_board_row1[0] = board_row1[0]
+	local_board_row1[1] = board_row1[1]
+	local_board_row1[2] = board_row1[2]
+	local_board_row2[0] = board_row2[0]
+	local_board_row2[1] = board_row2[1]
+	local_board_row2[2] = board_row2[2]
+	local_board_row3[0] = board_row3[0]
+	local_board_row3[1] = board_row3[1]
+	local_board_row3[2] = board_row3[2]
+
+	
+	position = BlockingMove(local_board_row1,local_board_row2, local_board_row3)
+	print("BlockingPosition",position)
+	if position == 0:
+		position = GetNextPosition(local_board_row1,local_board_row2, local_board_row3)
+	return position	
+
+def BlockingMove(board_row1,board_row2, board_row3):
+	local_board_row1 = [0,0,0]
+	local_board_row2 = [0,0,0]
+	local_board_row3 = [0,0,0]
+	local_board_row1[0] = board_row1[0]
+	local_board_row1[1] = board_row1[1]
+	local_board_row1[2] = board_row1[2]
+	local_board_row2[0] = board_row2[0]
+	local_board_row2[1] = board_row2[1]
+	local_board_row2[2] = board_row2[2]
+	local_board_row3[0] = board_row3[0]
+	local_board_row3[1] = board_row3[1]
+	local_board_row3[2] = board_row3[2]
+
+	position = 21
+	FinalStatus = 0
+	while FinalStatus == 0 and position > 0:
+		position = GetNextPosition(local_board_row1,local_board_row2, local_board_row3)
+		if position == 10:
+			local_board_row1[0] = 1
+		if position == 11:
+			local_board_row1[1] = 1
+		if position == 12:
+			local_board_row1[2] = 1
+		if position == 20:
+			local_board_row2[0] = 1
+		if position == 21:
+			local_board_row2[1] = 1
+		if position == 22:
+			local_board_row2[2] = 1
+		if position == 30:
+			local_board_row3[0] = 1
+		if position == 31:
+			local_board_row3[1] = 1
+		if position == 32:
+			local_board_row3[2] = 1
+			
+		FinalStatus = Check_Game_Status(local_board_row1,local_board_row2,local_board_row3)
+		if FinalStatus == 0:
+			if position == 10:
+				local_board_row1[0] = -10
+			if position == 11:
+				local_board_row1[1] = -11
+			if position == 12:
+				local_board_row1[2] = -12
+			if position == 20:
+				local_board_row2[0] = -20
+			if position == 21:
+				local_board_row2[1] = -21
+			if position == 22:
+				local_board_row2[2] = -22
+			if position == 30:
+				local_board_row3[0] = -30
+			if position == 31:
+				local_board_row3[1] = -31
+			if position == 32:
+				local_board_row3[2] = -31
+		
+	
+	return position	
+
+def GetNextPosition(board_row1,board_row2, board_row3):
 	position = 10
 	if GetEmptyCell(board_row1) > -1 :
 		print("AutoValue",position)
@@ -92,6 +174,7 @@ def AutoMode(board_row1,board_row2, board_row3):
 		return position + GetEmptyCell(board_row3)
 	print("No Empty Cell")	
 	return 0	
+	
 		
 def GetEmptyCell(board_row) :
 	print("Cell Value",board_row[0],board_row[1],board_row[2])
