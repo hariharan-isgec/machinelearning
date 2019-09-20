@@ -91,12 +91,76 @@ def AutoMode(board_row1,board_row2, board_row3):
 	local_board_row3[1] = board_row3[1]
 	local_board_row3[2] = board_row3[2]
 
-	
-	position = BlockingMove(local_board_row1,local_board_row2, local_board_row3)
-	print("BlockingPosition",position)
+	position = WinningMove(local_board_row1,local_board_row2, local_board_row3)
+	print("WinningPosition",position)
 	if position == 0:
-		position = GetNextPosition(local_board_row1,local_board_row2, local_board_row3)
+		position = BlockingMove(local_board_row1,local_board_row2, local_board_row3)
+		print("BlockingPosition",position)
+		if position == 0:
+			position = GetNextPosition(local_board_row1,local_board_row2, local_board_row3)
 	return position	
+
+def WinningMove(board_row1,board_row2, board_row3):
+	local_board_row1 = [0,0,0]
+	local_board_row2 = [0,0,0]
+	local_board_row3 = [0,0,0]
+	local_board_row1[0] = board_row1[0]
+	local_board_row1[1] = board_row1[1]
+	local_board_row1[2] = board_row1[2]
+	local_board_row2[0] = board_row2[0]
+	local_board_row2[1] = board_row2[1]
+	local_board_row2[2] = board_row2[2]
+	local_board_row3[0] = board_row3[0]
+	local_board_row3[1] = board_row3[1]
+	local_board_row3[2] = board_row3[2]
+
+	position = 21
+	FinalStatus = 0
+	while FinalStatus == 0 and position > 0:
+		position = GetNextPosition(local_board_row1,local_board_row2, local_board_row3)
+		if position == 10:
+			local_board_row1[0] = 2
+		if position == 11:
+			local_board_row1[1] = 2
+		if position == 12:
+			local_board_row1[2] = 2
+		if position == 20:
+			local_board_row2[0] = 2
+		if position == 21:
+			local_board_row2[1] = 2
+		if position == 22:
+			local_board_row2[2] = 2
+		if position == 30:
+			local_board_row3[0] = 2
+		if position == 31:
+			local_board_row3[1] = 2
+		if position == 32:
+			local_board_row3[2] = 2
+			
+		FinalStatus = Check_Game_Status(local_board_row1,local_board_row2,local_board_row3)
+		if FinalStatus == 0:
+			if position == 10:
+				local_board_row1[0] = -10
+			if position == 11:
+				local_board_row1[1] = -11
+			if position == 12:
+				local_board_row1[2] = -12
+			if position == 20:
+				local_board_row2[0] = -20
+			if position == 21:
+				local_board_row2[1] = -21
+			if position == 22:
+				local_board_row2[2] = -22
+			if position == 30:
+				local_board_row3[0] = -30
+			if position == 31:
+				local_board_row3[1] = -31
+			if position == 32:
+				local_board_row3[2] = -31
+		
+	
+	return position	
+
 
 def BlockingMove(board_row1,board_row2, board_row3):
 	local_board_row1 = [0,0,0]
