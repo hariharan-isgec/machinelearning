@@ -224,14 +224,14 @@ def BlockingMove(board_row1,board_row2, board_row3):
 	return position	
 
 def GetNextPosition(board_row1,board_row2, board_row3):
+	position = 20 # Start looking at middle row
+	if GetEmptyCell(board_row2) > -1 :
+		print("AutoValue",position)
+		return position + GetEmptyCell(board_row2)
 	position = 10
 	if GetEmptyCell(board_row1) > -1 :
 		print("AutoValue",position)
 		return position + GetEmptyCell(board_row1)
-	position = 20
-	if GetEmptyCell(board_row2) > -1 :
-		print("AutoValue",position)
-		return position + GetEmptyCell(board_row2)
 	position = 30
 	if GetEmptyCell(board_row3) > -1 :
 		print("AutoValue",position)
@@ -242,10 +242,10 @@ def GetNextPosition(board_row1,board_row2, board_row3):
 		
 def GetEmptyCell(board_row) :
 	print("Cell Value",board_row[0],board_row[1],board_row[2])
+	if board_row[1]>2: # Start looking at middle cell first
+		return 1
 	if board_row[0]>2:
 		return 0
-	if board_row[1]>2:
-		return 1
 	if board_row[2]>2:
 		return 2
 	return -1
