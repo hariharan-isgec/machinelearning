@@ -44,8 +44,8 @@ class Network(object):
             a = sigmoid(np.dot(w, a)+b)
         return a
 
-    def SGD(self, training_data, epochs, mini_batch_size, eta,
-            test_data=None):
+    def SGD_input(self, training_data, epochs, mini_batch_size, eta,
+            test_data=None, input_data=None):
         """Train the neural network using mini-batch stochastic
         gradient descent.  The ``training_data`` is a list of tuples
         ``(x, y)`` representing the training inputs and the desired
@@ -74,6 +74,38 @@ class Network(object):
                 # print("Epoch {} : {} / {}".format(j,self.evaluate(test_data),n_test));
             # else:
                 # print("Epoch {} complete".format(j))
+        return self.evaluate_input(test_data, input_data)
+
+    def SGD(self, training_data, epochs, mini_batch_size, eta,
+            test_data=None):
+        """Train the neural network using mini-batch stochastic
+        gradient descent.  The ``training_data`` is a list of tuples
+        ``(x, y)`` representing the training inputs and the desired
+        outputs.  The other non-optional parameters are
+        self-explanatory.  If ``test_data`` is provided then the
+        network will be evaluated against the test data after each
+        epoch, and partial progress printed out.  This is useful for
+        tracking progress, but slows things down substantially."""
+
+        training_data = list(training_data)
+        n = len(training_data)
+        
+           
+        if test_data:
+            test_data = list(test_data)
+            n_test = len(test_data)
+
+        for j in range(epochs):
+            random.shuffle(training_data)
+            mini_batches = [
+                training_data[k:k+mini_batch_size]
+                for k in range(0, n, mini_batch_size)]
+            for mini_batch in mini_batches:
+                self.update_mini_batch(mini_batch, eta)
+            if test_data:
+                print("Epoch {} : {} / {}".format(j,self.evaluate(test_data),n_test));
+            else:
+                print("Epoch {} complete".format(j))
 
     def update_mini_batch(self, mini_batch, eta):
         """Update the network's weights and biases by applying
@@ -126,17 +158,66 @@ class Network(object):
             nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
         return (nabla_b, nabla_w)
 
-    def evaluate(self, test_data):
+    def evaluate(self, test_case):
         """Return the number of test inputs for which the neural
         network outputs the correct result. Note that the neural
         network's output is assumed to be the index of whichever
         neuron in the final layer has the highest activation."""
         test_results = [(np.argmax(self.feedforward(x)), y)
-                        for (x, y) in test_data]
+                        for (x, y) in test_case]
 
-        print("Test Result:",test_results)
+        #print("Test Result:",test_results)
 
         return sum(int(x == y) for (x, y) in test_results)
+
+    def evaluate_input(self, test_case, input_case):
+        """Return the number of test inputs for which the neural
+        network outputs the correct result. Note that the neural
+        network's output is assumed to be the index of whichever
+        neuron in the final layer has the highest activation."""
+# [Cell(self, i) for i in xrange(region.cellsPerCol)]
+# self.cells = []
+# for i in xrange(region.cellsPerCol):
+	# self.cells.append(Cell(self, i))
+	
+        test_results = []
+        for (x,y) in test_case:
+            print("Test Case: Y contains",y)
+            prediction = np.argmax(self.feedforward(x))
+            print("Test Case: Prediction contains", prediction) 			
+            test_results.append((np.argmax(self.feedforward(x)), y))
+		# test_results = [(np.argmax(self.feedforward(x)), y)
+                        # for (x, y) in test_case]
+
+        print("Test Result: Test Case:",sum(int(x == y) for (x, y) in test_results))
+
+        test_results = []
+
+        for (x,y) in test_case:
+            print("Re-Test Case: Y contains",y)
+            prediction = np.argmax(self.feedforward(x))
+            print("Input Case: Prediction contains", prediction) 			
+            test_results.append((np.argmax(self.feedforward(x)), y))
+
+        # test_results = [(np.argmax(self.feedforward(x)), y)
+                        # for (x, y) in input_case]
+
+        print("Test Result: Input Case:",sum(int(x == y) for (x, y) in test_results))
+
+        test_results = []
+
+        for (x,y) in input_case:
+            print("Input Case: Y contains",y)
+            prediction = np.argmax(self.feedforward(x))
+            print("Input Case: Prediction contains", prediction) 			
+            test_results.append((np.argmax(self.feedforward(x)), y))
+
+        # test_results = [(np.argmax(self.feedforward(x)), y)
+                        # for (x, y) in input_case]
+
+        print("Test Result: Input Case:",sum(int(x == y) for (x, y) in test_results))
+
+        return (test_results[0][0])
 
     def cost_derivative(self, output_activations, y):
         """Return the vector of partial derivatives \partial C_x /

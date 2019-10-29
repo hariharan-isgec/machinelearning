@@ -56,7 +56,7 @@ def Perceptron_8_neurons(input1, input2, input3, input4, input5, input6, input7,
    
 def Teach_2_neurons():   
 	# Teaching the 2 Neuron Neural Network so that it learns to decide Row wise GameOver cominations   
-	for i in range(50) :
+	for i in range(100) :
 	   Perceptron_2_nerons(1,1,0)
 	   Perceptron_2_nerons(1,0,0)
 	   Perceptron_2_nerons(0,1,0)
